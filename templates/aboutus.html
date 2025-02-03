@@ -1,0 +1,44 @@
+{% extends "usernavbar.html" %}
+{% set active_page = 'aboutus'%}
+{% block content%}
+<div class="container about-us-container">
+    <div class="row">
+        <div class="col-md-7 text">
+            <div class="group-text-1">
+                <div class="group-text-header">
+                    <h3>About Us</h3>
+                </div>
+                <p class="paragraph-text">&emsp; &emsp;is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum</p>
+            </div>
+            <div class="group-text-1">
+                <div class="group-text-header">
+                    <h3>Customer Support</h3>
+                </div>
+                <p class="paragraph-text">&emsp; &emsp;Supporting the online music streaming platform for every users and the users can get the service by creating the account and signing into the website. This is the free online music platform and that supports Local and International music for the customers.</p>
+                <p class="paragraph-text">&emsp; &emsp;     The customers can contact to the admin teams from the contact form or with phone and with email. There is 24 hours service for contacting. The admin team will reply between the office hours. </p>
+                <div class="contact-button">
+                    <button type="submit" class="btn btn-artist-list" onclick="window.location.href='/home'"><a href="{{url_for('home')}}">Contact Us</a></button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 photo-text">
+            <div class="photo-container">
+                <div class="image-container">
+                    <img src="{{url_for('static', filename='photo/1.jpg')}}" alt="" class="image-contain">
+                </div>
+                <div class="text-container">
+                    <h3>Contact Information</h3>
+                    <p><i class="fa fa-mobile pr-3 contact-icon"></i> (+951) 2304999, (+951) 7538055</p>
+                    <p>
+                        <i class="fa fa-envelope icon pr-3 contact-icon"></i>MidnightFlyer.com
+                    </p> 
+                    <p>
+                        <i class="fa fa-map-marker icon pr-3 contact-icon"></i>No.54, Kyaung Gone St, Sanchaung, Yangon
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

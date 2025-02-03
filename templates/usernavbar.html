@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    <link href="{{url_for('static', filename='css/navbar.css')}}" rel="stylesheet">
+  </head>
+  <body class="background-image">
+    <nav class="navbar navbar-expand-lg navbar-dark" >
+      <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="#">Midnight Flyer</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link {{'active' if active_page=='home' else ''}}" aria-current="page" href="{{url_for('home')}}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {{'active' if active_page=='artist' else ''}}" href="{{url_for('userartist')}}">Artist</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {{'active' if active_page=='aboutus' else ''}}" href="{{url_for('aboutus')}}">About Us</a>
+            </li>
+            <form action="/searchuserside" method="POST" role="search">
+              <div id="search">
+                <input id="input" name="searchuser" placeholder="Search..."/>
+                <button id="button" type="submit"><i class="fa fa-search"></i></button>
+              </div>
+            </form>  
+          </ul>
+          {% if playsonglist %}
+          <div class="song-player-container">
+            <div class="row songrow">
+              <div class="col-5 player-container">
+                <div class="song-name">
+                  <span class="songname" id="songname"></span>
+                </div>
+              </div>
+              {% if songalbumidlist %}
+              <div class="col-5 button-container d-flex-reverse">
+                <button id="prevBtn" class="btn" onclick="window.location.href='/previous_song_album/{{playsonglist['SongID']}}/{{album['AlbumID']}}/{{ArtistID}}';"><i class="fas fa-step-backward" aria-hidden="true"></i></button>
+                <button id="playPauseBtn" class="btn"onclick="controlMusic('pause')"><i class="fas fa-pause" aria-hidden="true" aria-hidden="true"></i></button>
+                <button id="playPauseBtn" class="btn"onclick="controlMusic('play')"><i class="fas fa-play" aria-hidden="true" aria-hidden="true"></i></button>
+                <button id="nextBtn" class="btn" onclick="window.location.href='/next_song_album/{{playsonglist['SongID']}}/{{album['AlbumID']}}/{{ArtistID}}';"><i class="fas fa-step-forward"></i></button>
+              </div>
+              {% else %}
+                <div class="col-5 button-container d-flex-reverse">
+                  <button id="prevBtn" class="btn" onclick="window.location.href='/previous/{{playsonglist['SongID']}}/{{album['AlbumID']}}/{{ArtistID}}';"><i class="fas fa-step-backward" aria-hidden="true" href=""></i></button>
+                  <button id="playPauseBtn" class="btn" onclick="controlMusic('pause')"><i class="fas fa-pause" aria-hidden="true" aria-hidden="true"></i></button>
+                  <button id="playPauseBtn" class="btn" onclick="controlMusic('play')"><i class="fas fa-play" aria-hidden="true" aria-hidden="true"></i></button>
+                  <button id="nextBtn" class="btn" onclick="window.location.href='/next/{{playsonglist['SongID']}}/{{album['AlbumID']}}/{{ArtistID}}';"><i class="fas fa-step-forward"></i></button>
+                </div>
+              {% endif %}
+            </div>
+            <div class="row music-player">
+              <div class="col-1 d-flex time" id="songpos"></div>
+              <progress class="col-8 fill" id="progress_bar" value="0" max="0"></progress>
+              <div class="col-1 d-flex time" id="duration">{{duration}}</div>
+          </div>
+          {% else %}
+          <div class="song-player-container">
+            <div class="row songrow">
+              <div class="col-5 player-container">
+                <div class="song-name">
+                  <span class="songname" id="songname">No track is playing</span>
+                </div>
+              </div>
+              <div class="col-5 button-container d-flex-reverse">
+                <button id="prevBtn" class="btn" onclick="window.location.href='';"><i class="fas fa-step-backward" aria-hidden="true" href="" disabled></i></button>
+                <button id="playPauseBtn" class="btn" onclick="controlMusic('pause')"><i class="fas fa-pause" aria-hidden="true" aria-hidden="true"></i></button>
+                  <button id="playPauseBtn" class="btn" onclick="controlMusic('play')"><i class="fas fa-play" aria-hidden="true" aria-hidden="true"></i></button>
+                <button id="nextBtn" class="btn" onclick="window.location.href='';"><i class="fas fa-step-forward" disabled></i></button>
+              </div>
+            </div>
+            <div class="row music-player">
+              <div class="col-1 d-flex time" id="songpos"></div>
+              <progress class="col-8 fill" id="progress_bar" value="0" max="0"></progress>
+              <div class="col-1 d-flex time" id="duration">{{duration}}</div>
+            </div>
+          {% endif %}
+          </div>
+          {% if not session %}
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('signup')}}">Sign Up</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-login" href="{{url_for('login')}}">Login</a>
+            </li>
+          </ul>
+          {% else %}
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="{{url_for('userprofile')}}">Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-login" href="{{url_for('logout')}}">Logout</a>
+            </li>
+          </ul>
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+      <div class="main">
+        {% block content %}
+
+
+        {% endblock%}
+      </div>
+      <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-xl-7 copyright-container"><a>
+                Copy Right &copy; Midnight Flyer . All rights reserved</a>
+                </div>
+                <div class="col-md-6 col-xl-5 foot-link-container">
+                <a href="{{url_for('aboutus')}}" class="Foot-link">About Us</a>
+                <a href="{{url_for('userartist')}}" class="Foot-link">Artist</a>
+                <a href="{{url_for('logout')}}" class="Foot-link">LogOut</a>
+                </div>
+            </div>
+        </div>
+       </footer>
+       <script>
+        function RunningSongInfo() {
+            fetch('/display')
+                .then(response => response.json())
+                .then(data => {
+                    const pos_value = data.position;
+                    const max_value = data.duration1;
+                    document.getElementById('songname').textContent = data.songname || 'No track is playing';
+                    document.getElementById('duration').textContent = data.duration || '00:00';
+                    document.getElementById('songpos').textContent = data.position1 || '00:00';
+                    const progressBar = document.getElementById('progress_bar');
+                    progressBar.setAttribute("value", pos_value)
+                    progressBar.setAttribute("max", max_value)
+                });
+        }
+        setInterval(RunningSongInfo, 1000);
+        function controlMusic(action) {
+          fetch('/control', {
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              method: 'POST',
+              body: JSON.stringify({ action: action})
+          })
+          .then(response => response.json());
+      }
+      function sendinginfo() {
+        navigator.sendBeacon('/killing_thread');
+    }
+
+      window.addEventListener('beforeunload', function () {
+          sendinginfo();
+    });
+      </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+  </body>
+</html>

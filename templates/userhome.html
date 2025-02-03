@@ -1,0 +1,209 @@
+{% extends "usernavbar.html" %}
+{% set active_page = 'home'%}
+{% block content%}
+  <div id="carouselExampleControls" class="carousel slide " data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <div class="row">
+            <div class="col-md-6 col-xl-8 container-box">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+                  {% if messages %}
+                      {% for (category, msg) in messages %}
+                          <p class="alert alert-{{category}}">   {{ msg }} </p>
+                      {% endfor %}
+                  {% endif %}
+              {% endwith %}
+                <div class="h3-carousel">
+                    <h2 class="text">The Avicii Memory Board</h2>
+                    <h4 class="text">In Loving Memory</h4>
+                    <p class="text">1989.09.08 - 2018.04.20</span>
+                    <h5 class="text">Listen Now</h5>
+                    <div class="text">
+                    <div class="row">
+                        {% if session %}
+                        <div class="">
+                          <button type="submit" class="btn-login-signup p-2" onclick="window.location.href='/userartist'">Listen</button>
+                        </div>
+                        {% else %}
+                        <div class="col login">
+                            <button type="submit" class="btn-login-signup p-2" onclick="window.location.href='/login'">Login</button>
+                        </div>
+                        <div class="col signup">
+                            <button type="submit" class="btn-login-signup p-2" onclick="window.location.href='/signup'">Sign Up</button>
+                        </div>
+                        {% endif %}
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-4 photo-part"><img src="{{url_for('static',filename='photo/avicii.jpg')}}" class="carousel-image" alt="..."></div>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <div class="row">
+            <div class="col-md-6 col-xl-8 container-box">
+                <div class="h3-carousel">
+                    <h2 class="text">Midnight Flyer</h2>
+                    <h4 class="text">Lovely Music</h4>
+                    <p class="text">Music Stream Web</span>
+                    <h5 class="text">With Relax! Can Logout</h5>
+                    <div class="text">
+                    <div class="row">
+                        {% if session %}
+                        <div class="">
+                          <button type="submit" class="btn-login-signup p-2" onclick="window.location.href='/Logout'">LogOut</button>
+                        </div>
+                        {% else %}
+                          <div class="col login">
+                            <button type="submit" class="btn-login-signup p-2" onclick="window.location.href='/login'">Login</button>
+                          </div>
+                          <div class="col signup">
+                            <button type="submit" class="btn-login-signup p-2" onclick="window.location.href='/signup'">Sign Up</button>
+                          </div>
+                        {% endif%}
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xl-4 photo-part"><img src="{{url_for('static', filename='photo/1.jpg')}}" class="carousel-image" alt="..."></div>
+        </div>
+      </div>
+      
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+  <div class="container">
+    <div class="row">
+        <div class="col-xl-5 trendingsonglist">
+            <button class="btn btn-song-album" onclick="window.location.href=''">Trending</button>
+            <div class="table-container">
+                <div class="table-contain">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Song Name</th>
+                                <th> Count </th>
+                                <th> Duration </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for song in songcount[:5] %}
+                              <tr>
+                                <td>{{loop.index}}</td>
+                                <td>{{songnamedict[song['SongID']]}}</td>
+                                <td>{{song['count']}}</td>
+                                <td>{{songdict[song['SongID']]}}</td>
+                              </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-7 trendingalbum">
+            <button class="btn btn-song-album" onclick="window.location.href=''">Popular Album</button>
+            <div class="card-wrapper">
+              <div class="row">
+                {% for album in count[:6] %}
+                  <div class="col-md-4">
+                    <div class="card" id="album-card" onclick="window.location.href='/songlistbyalbum/{{album['AlbumID']}}/{{artistiddict[album['AlbumID']]}}'">
+                      <div class="card-img">
+                        <img src="{{albumphoto[album['AlbumID']]}}" class="card-img" alt="">
+                      </div>
+                      <div class="card-body">
+                        <h5>{{albumdict[album['AlbumID']]}}</h5>
+                        <h6>{{albumnamedict[album['AlbumID']]}}</h6>
+                        <h6>{{album['ArtistID']}}</h6>
+                        <p>Album</p>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+
+        </div>
+  </div>
+  <div class="all-artists">
+    <div class="artist-header">
+      <h3><a href="{{url_for('userartist')}}">All Artist<a></h3>
+      {% for artisttype in artisttypelist %}
+              <button type="submit" class="btn btn-artist-list" onclick="window.location.href='artistby/{{artisttype['ArtistTypeID']}}'">{{artisttype['ArtistType']}}</button>
+      {% endfor %}
+    </div>
+    <div class="container artist-container">
+      <div class="row gy-3">
+        {% for artist in artistlist[:8] %}
+        <div class="col-md-3">
+          <div class="card" onclick="window.location.href='eachartistlist/{{artist['ArtistID']}}'">
+            <div class="card-img-artist">
+              <img src="{{artist['Photo']}}" class="card-img-artist" alt="">
+            </div>
+            <div class="card-body">
+              <h6>{{artist['ArtistName']}}</h6>
+              <p>Artist</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+    </div>
+    <div class="container-fluid contact-us">
+      <div class="row px-5">
+        <div class="col-sm-6">
+            <div>
+                <h3 class="text-white">Contact Us</h3>
+                <p class="text-secondary">Can contact to the admin team with this contact form</p>
+            </div>
+            <div class="links" id="bordering"> 
+              <div class="contact-address">
+                <i class="fa fa-mobile contact-icon pr-3"></i> (+951) 2304999, (+951) 7538055
+              </div>
+              <div class="contact-address">
+                <i class="fa fa-envelope icon pr-3 contact-icon"></i>MidnightFlyer.com
+              </div>
+              <div class="contact-address"><i class="fa fa-map-marker icon pr-3 contact-icon"></i>No.54, Kyaung Gone St, Sanchaung, Yangon</div>
+              
+            </div>
+          
+        </div>
+        <div class="col-sm-6 pad">
+            <form class="msg-form" method="POST" action="/contactmessage">
+                <div class="form-group"> <label for="name" class="h6">Your Name</label>
+                    <div class="input-group border rounded">
+                        <div class="input-group-addon px-2 pt-1">
+                        <i class="fa fa-user contact-icon"></i>
+                        </div> 
+                        <input type="text" name="name" class="form-control" id="username" value="{{username}}">
+                    </div>
+                </div>
+                
+                <div class="form-group"> <label for="name" class="h6">EnterEmail</label>
+                    <div class="input-group border rounded">
+                        <div class="input-group-addon px-2 pt-1">
+                      <i class="fa fa-envelope contact-icon"></i> 
+                        </div>  <input type="text" name="email" class="form-control" id="email" value="{{email}}">
+                    </div>
+                </div>
+                <div class="form-group"> <label for="msg" class="h6">Message</label> <textarea name="message" id="msgus" cols="10" rows="5" class="form-control bg-light" placeholder="Message" required></textarea> </div>
+                {% if 'email' in session and 'username' in session%}
+                  <div class="form-group d-flex justify-content-end"> <input type="submit" name="Send" class="btn btn-primary text-white" value="Send message"> </div> 
+                {% else %}
+                <div class="form-group d-flex justify-content-end"> <input type="submit" name="Send" class="btn btn-primary text-white" value="Send message" disabled> </div> 
+                {% endif %}
+              
+            </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

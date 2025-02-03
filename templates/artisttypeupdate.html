@@ -1,0 +1,43 @@
+{% extends "adminsidebar.html" %}
+{% set active_page = 'artisttype' %}
+{% block content %}
+<div class="form-contain">
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm">
+            <button class="btn" id="sidebar-toggle" type="button">
+                <i class="fa-solid fa-sliders"></i>
+            </button>
+        </li>
+        <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="{{url_for('artisttype')}}">ArtistType</a></li>
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">UpdateArtistType</li>
+      </ol>
+      <div class="main-container">
+        <h2>Update Artist Type</h2>
+      </div>
+      <div class="col-xl-6 col-md-6 col-sm-4 form-container">
+
+        <form method="POST" action="/artisttypeupdated/{{artisttypelist['ArtistTypeID']}}">
+            <div class="mb-3">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for (category,msg) in messages %}
+                                <p class="alert alert-{{category}}"> {{msg}} </p>
+                            {% endfor %}
+                        {%  endif  %}
+                    {% endwith %}
+              <label for="exampleInputEmail1" class="form-label">Artist Name</label>
+
+              <div class="row">
+                <div class="col-1"><i class="fa-solid fa-user" id="add-update_icon"></i></div>
+                <div class="col"><input type="text" class="form-control" id="artisttype" name="artisttype" aria-describedby="emailHelp" placeholder="Enter Artist Name" value="{{artisttypelist['ArtistType']}}"></div>
+            </div>  
+            <div class="d-flex flex-row-reverse">
+                <button type="submit" class="btn btn-light p-2" id="add-button">Update</button>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
+{% endblock %}
+
+           

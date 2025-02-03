@@ -1,0 +1,105 @@
+{% extends "usernavbar.html" %}
+{% set active_page = 'artist'%}
+{% block content%}
+<div class="album-profile-part">
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm"><a class="opacity-5" href="{{url_for('userartist')}}">Artist List</a></li>
+        <li class="breadcrumb-item text-sm"><a class="opacity-5" href="/eachartistlist/{{ArtistID}}">Album by artist</a></li>
+        <li class="breadcrumb-item text-sm active" aria-current="page">Songs by Album</li>
+      </ol>
+    <div class="row">
+        <div class="col-md-4" id="photo-by-album">
+           <div class="album-profile">
+            <img src="{{album['Photo']}}" alt="" class="album-photo">
+           </div>
+        </div>
+        <div class="col-md-8" id="album-text">
+            <div class="album-header-text">
+                <h4>Album</h4>
+                <h1>{{album['AlbumName']}}</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="artist-album">
+    <div class="row">
+        <div class="col-md-5" id="artist-song-list">
+            <h5>All Albums</h5>
+            <div class="table-container" id="song-list">
+                <div class="table-contain">
+                    <table class="table table-striped" id="">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Album ID</th>
+                                <th>Album Name</th>
+                                <th>Type</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for album in albumlist %}
+                                <tr class="album_pop" onclick="window.location.href='/songlistbyalbum/{{album['AlbumID']}}/{{album['ArtistID']}}';">
+                                    <td>{{loop.index}}</td>
+                                    <td>{{album['AlbumID']}}</td>
+                                    <td>{{album['AlbumName']}}</td>
+                                    <td>Album</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+        </div>
+        <div class="col-md-7" id="artist-album-list">
+            <div class="album-list">
+                <h3>Songs of {{album['AlbumName']}}</h3>
+                <div class="row">
+                    <h5 class="album-tit">Songs</h5>
+                    <h5 class="album-tit"><a href ="/playalbum/{{album['AlbumID']}}/{{ArtistID}}">Play Album</a></h5>
+                </div>
+                <div class="song-table-container" id="song-list">
+                    <div class="table-contain">
+                        <table class="table table-striped" id="song-table">
+                            <thead>
+                                <tr>
+                                    <th>No.</th>
+                                    <th>Song ID</th>
+                                    <th>Song Name</th>
+                                    <th>Duration</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                    {% if searchdata %}
+                                    {% for song in searchdata %}
+                                    <tr class="play-song" onclick="window.location.href='/play/{{song['SongID']}}/{{album['AlbumID']}}/{{ArtistID}}';">
+                                        <td>{{loop.index}}</td>
+                                        <td>{{song['SongID']}}</td>
+                                        <td>{{song['SongName']}}</td>
+                                        <td>{{durat[song['SongName']]}}</td>
+                                    </tr>
+                                {% endfor %}
+                                    {% else %}
+                                    {% for song in songlist %}
+                                    <tr class="play-song" onclick="window.location.href='/play/{{song['SongID']}}/{{album['AlbumID']}}/{{ArtistID}}';">
+                                        <td>{{loop.index}}</td>
+                                        <td>{{song['SongID']}}</td>
+                                        <td>{{song['SongName']}}</td>
+                                        <td>{{durat[song['SongName']]}}</td>
+                                    </tr>
+                                {% endfor %}
+                                    {% endif %}
+                                
+                            
+                                    
+                                    
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

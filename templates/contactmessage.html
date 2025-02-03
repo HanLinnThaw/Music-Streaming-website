@@ -1,0 +1,104 @@
+{% extends "adminsidebar.html" %}
+{% set active_page = 'contact' %}
+{% block content %}
+<div class="row nav-container">
+    <nav class="navbar navbar-expand px-3 border-bottom">
+        <div class="navbar-collapse navbar">
+            <div class="container-fluid py-4 px-3" id="search-box">
+                <nav aria-label="breadcrumb">
+                  <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Message List</li>
+                  </ol>
+                  <h6 class="font-weight-bolder mb-0">Message List</h6>
+                </nav>
+              </div>
+        </div>
+        <div class="navbar-collapse" id="navbar">
+          <form action ="/searchmessage" method= "POST">
+            <div class="ms-md-auto d-flex">
+              <div class="input-group">
+                <button class="input-group-text text-body"><i class="fas fa-search" aria-hidden="true" type="submit"></i></button>
+                <input type="text" class="form-control" name="searchmessage" placeholder="Type here...">
+              </div>
+            </div>
+          </form>
+            <ul class="navbar-nav">
+              <li class="nav-item d-flex px-1 align-items-center">
+                <a href="{{url_for('logout')}}" class="nav-link text-body font-weight-bold px-0">
+                  <i class="fa fa-sign-out me-sm-1"></i>
+                  <span class="d-sm-inline d-none">Log Out</span>
+                </a>
+              </li>
+              <li class="nav-item px-0 align-items-center">
+                <button class="btn" id="sidebar-toggle" type="button">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+              </li>
+            </ul>
+          </div>
+        
+    </nav>
+</div>
+<div class="container-fluid py-4">   
+    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4 d-flex" id="card-bo">
+        <div class="card flex-fill border-0 illustration">
+            <div class="card-body p-0 d-flex flex-fill" id="card1">
+                <div class="row g-0 w-100">
+                    <div class="p-3 m-1">
+                        <h3>Message List</h3>
+                        <h5 class="mb-0">Total Messages</h5>
+                        <span class="icon"><i class="fa fa-user"></i></span>
+                        <span class="text">{{message_count}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>  
+    </div>
+</div>
+
+<div class="table-container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for (category, msg) in messages %}
+         <p class="alert alert-{{category}}">   {{ msg }} </p>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+    <div class="table-contain">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Contact ID</th>
+                    <th>User ID</th>
+                    <th> Message </th>
+                    <th> DateTime </th>
+                    <th> Delete </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% if searchdata %}
+            {% for message in searchdata %}
+            <tr>
+             <td> {{message['ContactID']}}</td>
+             <td> {{message['UserID']}}</td>
+             <td> {{message['Text']}}</td>
+             <td> {{message['DateTime']}}</td>
+             <td><a href="/deletemessage/{{message['ContactID']}}"><i class="fas fa-trash"></i></a></td>
+         </tr>
+         {% endfor %}
+            {% else %}
+            {% for message in messagelist %}
+            <tr>
+             <td> {{message['ContactID']}}</td>
+             <td> {{message['UserID']}}</td>
+             <td> {{message['Text']}}</td>
+             <td> {{message['DateTime']}}</td>
+             <td><a href="/deletemessage/{{message['ContactID']}}"><i class="fas fa-trash"></i></a></td>
+         </tr>
+         {% endfor %}
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

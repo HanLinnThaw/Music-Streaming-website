@@ -1,0 +1,94 @@
+{% extends "usernavbar.html" %}
+{% set active_page = 'artist'%}
+{% block content%}
+<div class="artist-profile">
+  <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+    <li class="breadcrumb-item text-sm"><a class="opacity-5" href="{{url_for('userartist')}}">Artist List</a></li>
+    <li class="breadcrumb-item text-sm active" aria-current="page">Album by Artist</li>
+  </ol>
+    <div class="row">
+          <div class="col-md-4" id="profile-photo" >
+            <div class="profile-photo-div">
+              <img src="{{artist['Photo']}}" alt="" class="profile-image">
+            </div>
+          </div>
+          <div class="col-md-8" id="profile-text">
+            <div class="profile-header-text">
+              <h1>{{artist['ArtistName']}}</h1>
+              <p class="profile-p">&emsp; &emsp; {{artist['Biography']}}</p>
+          </div>
+      </div>
+    </div>
+</div>
+<div class="artist-album">
+    <div class="row">
+        <div class="col-md-5" id="artist-song-list">
+            <h5>All Songs</h5>
+            <div class="table-container" id="song-list">
+                <div class="table-contain">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Song Name</th>
+                                <th> Duration </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {% for song in songlist%}
+                                  <tr>
+                                    <td>{{loop.index}}</td>
+                                    <td>{{song['SongName']}}</td>
+                                    <td>{{songdurationdict[song['SongID']]}}</td>
+                                  </tr>
+                                {% endfor %}
+                                
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+        </div>
+        <div class="col-md-7" id="artist-album-list">
+            <div class="album-list">
+                <h3>Albums list of {{artist['ArtistName']}}</h3>
+                <h5 class="album-tit">Albums</h5>
+                <div class="card-wrapper">
+                  <div class="row gy-2">
+                      {% if searchdata %}
+                      {% for album in searchdata %}
+                      <div class="col-md-4 col-sm-3 col-4">
+                        <div class="card" id="album-card" onclick="window.location.href='/songlistbyalbum/{{album['AlbumID']}}/{{artist['ArtistID']}}'">
+                          <div class="card-img">
+                            <img src="{{album['Photo']}}" class="card-img" alt="">
+                          </div>
+                          <div class="card-body">
+                            <h5>{{album['AlbumName']}}</h5>
+                            <p>Album</p>
+                          </div>
+                        </div>
+                      </div>
+                    {% endfor %}
+                      {% else %}
+                      {% for album in albumlist %}
+                      <div class="col-md-4 col-sm-3 col-4">
+                        <div class="card" id="album-card" onclick="window.location.href='/songlistbyalbum/{{album['AlbumID']}}/{{artist['ArtistID']}}'">
+                          <div class="card-img">
+                            <img src="{{album['Photo']}}" class="card-img" alt="">
+                          </div>
+                          <div class="card-body">
+                            <h5>{{album['AlbumName']}}</h5>
+                            <p>Album</p>
+                          </div>
+                        </div>
+                      </div>
+                    {% endfor %}
+                      {% endif %}
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

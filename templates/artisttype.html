@@ -1,0 +1,68 @@
+{% extends "adminsidebar.html" %}
+{% set active_page = 'artisttype' %}
+{% block content %}
+<div class="form-contain">
+    <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+        <li class="breadcrumb-item text-sm">
+            <button class="btn" id="sidebar-toggle" type="button">
+                <i class="fa-solid fa-sliders"></i>
+            </button>
+        </li>
+
+        <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Artist Type List</li>
+      </ol>
+      <div class="main-container">
+        <h2>Artist Type List</h2>
+      </div>
+      <div class="col-xl-6 col-md-6 col-sm-4 form-container">
+        <form method="POST" action="/artisttypeadd">
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Artist Type</label>
+
+              <div class="row">
+                <div class="col-1"><i class="fa fa-user" id="icon_id"></i></div>
+                <div class="col"><input type="text" class="form-control" name="artisttype" id="artistname" aria-describedby="emailHelp" placeholder="Enter Artist Name"></div>
+            </div>  
+           
+            <div class="d-flex flex-row-reverse">
+                <button type="submit" class="btn btn-light p-2" id="add-button">Add Artist Type</button>
+            </div>
+        </div>
+    </form>
+        </div>
+        <div class="table-container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for (category, msg) in messages %}
+                 <p class="alert alert-{{category}}">   {{ msg }} </p>
+                {% endfor %}
+            {% endif %}
+            {% endwith %}
+            <div class="table-contain">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Artist Type ID</th>
+                            <th>Artist Type</th>
+                            <th> Edit </th>
+                            <th> Delete </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for artisttypes in artisttypelist %}
+                       <tr>
+                        <td> {{artisttypes['ArtistTypeID']}}</td>
+                        <td> {{artisttypes['ArtistType']}}</td>
+                        <td><a href="/artisttypeupdate/{{artisttypes['ArtistTypeID']}}"><i class="fas fa-edit"></i></a></td>
+                        <td><a href="/artisttypedelete/{{artisttypes['ArtistTypeID']}}" ><i class="fa fa-trash"></i></a></td>
+                       
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</div>
+    
+{% endblock %}
+           

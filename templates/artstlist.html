@@ -1,0 +1,46 @@
+{% extends "usernavbar.html" %}
+{% set active_page = 'artist'%}
+{% block content%}
+<section class="all-artists">
+    <div class="artist-header">
+      <h3><a href="{{url_for('userartist')}}">All Artist<a></h3>
+      {% for artisttype in artisttypelist %}
+        <button type="submit" class="btn btn-artist-list" onclick="window.location.href='artistby/{{artisttype['ArtistTypeID']}}'">{{artisttype['ArtistType']}}</button>
+      {% endfor %}
+  </section>
+  <div class="container artist-container">
+    <div class="row gy-3">
+      {% if searchdata %}
+      {% for artist in searchdata %}
+        <div class="col-md-3">
+          <div class="card" onclick="window.location.href='eachartistlist/{{artist['ArtistID']}}';">
+            <div class="card-img-artist">
+              <img src="{{artist['Photo']}}" class="card-img-artist" alt="">
+            </div>
+            <div class="card-body">
+              <h5>{{artist['ArtistName']}}</h5>
+              <p>Artist</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+      {% else %}
+      {% for artist in artistlist %}
+      <div class="col-md-3">
+        <div class="card" onclick="window.location.href='eachartistlist/{{artist['ArtistID']}}';">
+          <div class="card-img-artist">
+            <img src="{{artist['Photo']}}" class="card-img-artist" alt="">
+          </div>
+          <div class="card-body">
+            <h5>{{artist['ArtistName']}}</h5>
+            <p>Artist</p>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+      {% endif %}
+
+
+    </div>
+  </div>
+{% endblock %}
